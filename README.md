@@ -1,4 +1,5 @@
 # FireClient
+![FireClient Logo](.github/fireclient1024.png)
 ## About
 FireClient is a work in progress Minecraft 1.20.1 client (with later versions coming) that is for general use, but specialized for SMP players.
 * Designed to keep a vanilla-ish look
