@@ -1,0 +1,10 @@
+{
+	"key.category.fireclient": "Fire Client",
+	"key.fireclient_openconfig": "Open Configuration Menu",
+	"key.fireclient_armorhud": "Toggle ArmorHUD",
+	"key.fireclient_renderworld": "Toggle World Rendering",
+	"key.fireclient_automessage": "Use AutoMessage",
+	"key.fireclient_coordschat": "Use CoordsChat",
+	"key.fireclient_coordinates": "Toggle the Coordinates Display",
+	"key.fireclient_togglepiechart": "Toggles the PieChart"
+}

@@ -1,0 +1,64 @@
+package com.rooxchicken.fireclient.EntityFeatures;
+
+import java.nio.charset.MalformedInputException;
+
+import com.rooxchicken.fireclient.FireClient;
+
+import net.fabricmc.fabric.impl.client.indigo.renderer.helper.TextureHelper;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.render.entity.feature.FeatureRenderer;
+import net.minecraft.client.render.entity.feature.FeatureRendererContext;
+import net.minecraft.client.render.entity.model.PlayerEntityModel;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.texture.TextureManager;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RotationAxis;
+
+public class CatEarsFeature
+extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
+	
+	private static final Identifier TEXTURE = new Identifier("fireclient:textures/cosmetics/catears.png");
+    public CatEarsFeature(FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> featureRendererContext) {
+        super(featureRendererContext);
+        FireClient.LOGGER.info("Hello! - cat ears");
+        //earsTexture = new Identifier("fireclient:textures/cosmetics/catears.png");
+        //MinecraftClient.getInstance().getTextureManager().getTexture(earsTexture);
+        
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, AbstractClientPlayerEntity abstractClientPlayerEntity, float f, float g, float h, float j, float k, float l) {
+        if (!FireClient.renderCatEars || !abstractClientPlayerEntity.hasSkinTexture() || abstractClientPlayerEntity.isInvisible()) {
+            return;
+        }
+        
+        
+        Identifier earsTexture = new Identifier("fireclient:textures/entity/catears.png");
+        //VertexConsumer vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumerProvider, RenderLayer.getSolid(), true, false);
+        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityAlpha(earsTexture));
+        
+        int m = LivingEntityRenderer.getOverlay(abstractClientPlayerEntity, 0.0f);
+        for (int n = 0; n < 1; ++n) {
+            float o = MathHelper.lerp(h, abstractClientPlayerEntity.prevYaw, abstractClientPlayerEntity.getYaw()) - MathHelper.lerp(h, abstractClientPlayerEntity.prevBodyYaw, abstractClientPlayerEntity.bodyYaw);
+            float p = MathHelper.lerp(h, abstractClientPlayerEntity.prevPitch, abstractClientPlayerEntity.getPitch());
+            matrixStack.push();
+            matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(o));
+            matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(p));
+            matrixStack.translate(0.14f * (float)(n * 2 - 1), 0.0f, 0.0f);
+            matrixStack.translate(0.0f, -0.5f, 0.0f);
+            matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-p));
+            matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-o));
+            float q = 1.3333334f;
+            //matrixStack.scale(1.3333334f, 1.3333334f, 1.3333334f);
+            getContextModel().renderEars(matrixStack, vertexConsumer, i, m);
+            matrixStack.pop();
+        }
+    }
+    }
