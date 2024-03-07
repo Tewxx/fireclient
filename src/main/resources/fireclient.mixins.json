@@ -8,7 +8,8 @@
 		"MixinWorldRenderer",
 		"MixinDebugPieChart",
 		"Mixin_HeldItemRenderer",
-		"MixinAbstractClientPlayerEntity"
+		"MixinAbstractClientPlayerEntity",
+		"MixinLivingEntityRenderer"
 	],
 	"injectors": {
 		"defaultRequire": 1

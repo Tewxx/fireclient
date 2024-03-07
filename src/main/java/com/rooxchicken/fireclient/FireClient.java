@@ -20,6 +20,7 @@ import com.rooxchicken.fireclient.modules.Coordinates;
 import com.rooxchicken.fireclient.modules.CoordsChat;
 import com.rooxchicken.fireclient.modules.FullBright;
 import com.rooxchicken.fireclient.modules.ModuleBase;
+import com.rooxchicken.fireclient.modules.Nametag;
 import com.rooxchicken.fireclient.modules.RenderWorld;
 import com.rooxchicken.fireclient.modules.ToggleablePieChart;
 
@@ -30,7 +31,7 @@ public class FireClient implements ModInitializer
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("fireclient");
     
-    public static String FIRECLIENT_VERSION = "0.1.6";
+    public static String FIRECLIENT_VERSION = "0.1.7";
     public static boolean FIRECLIENT_CONFIGFAIL = false;
     public static boolean FIRECLIENT_IGNOREFAIL = false;
 	public static boolean FIRECLIENT_WHITELISTED = false;
@@ -54,6 +55,7 @@ public class FireClient implements ModInitializer
 		Modules = new HashMap<String, ModuleBase>();
 		Modules.put("ToggleablePieChart", new ToggleablePieChart());
 		Modules.put("RenderWorld", new RenderWorld());
+		Modules.put("Nametag", new Nametag());
 		Modules.put("FullBright", new FullBright());
 		Modules.put("CoordsChat", new CoordsChat());
 		Modules.put("Coordinates", new Coordinates());
