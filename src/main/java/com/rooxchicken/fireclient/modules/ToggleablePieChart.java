@@ -8,8 +8,12 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.KeyBinding;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import org.lwjgl.glfw.GLFW;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.screen.FireClientMainScreen;
 
@@ -262,25 +266,24 @@ public class ToggleablePieChart extends ModuleBase
 	}
 
 	@Override
-	public void LoadSettings(Scanner scanner)
+	public void LoadSettings(JsonObject file)
 	{
-		Enabled = Boolean.parseBoolean(scanner.nextLine());
-		PositionX = Integer.parseInt(scanner.nextLine());
-		PositionY = Integer.parseInt(scanner.nextLine());
-		Scale = Double.parseDouble(scanner.nextLine());
+		Enabled = file.get("Enabled").getAsBoolean();
+		PositionX = file.get("PositionX").getAsInt();
+		PositionY = file.get("PositionY").getAsInt();
+		Scale = file.get("Scale").getAsDouble();
 	}
 
 	@Override
-	public String SaveSettings()
+	public void SaveSettings(JsonObject file)
 	{
-		String output = "";
+		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
+		moduleSettings.put("Enabled", Enabled);
+		moduleSettings.put("PositionX", PositionX);
+		moduleSettings.put("PositionY", PositionY);
+		moduleSettings.put("Scale", Scale);
 
-		output += Enabled + "\n";
-		output += PositionX + "\n";
-		output += PositionY + "\n";
-		output += Scale + "\n";
-
-		return output;
+		file.addProperty(Name, new Gson().toJson(moduleSettings));
 	}
 	
 }

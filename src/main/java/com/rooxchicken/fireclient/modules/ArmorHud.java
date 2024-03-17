@@ -1,9 +1,12 @@
 package com.rooxchicken.fireclient.modules;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.screen.FireClientMainScreen;
 
@@ -12,16 +15,22 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class ArmorHud extends ModuleBase implements HudRenderCallback
 {
+	public boolean ShowPercentage = false;
 	private TextRenderer textRenderer;
+	
+	private ButtonWidget enabledButton;
+	private ButtonWidget percentageButton;
 	
 	@Override
 	public void Initialize()
@@ -84,9 +93,9 @@ public class ArmorHud extends ModuleBase implements HudRenderCallback
 	}
 
 	@Override
-	public void RenderConfiguration(FireClientMainScreen scren, DrawContext context, TextRenderer textRenderer, int mouseX, int mouseY)
+	public void RenderConfiguration(FireClientMainScreen screen, DrawContext context, TextRenderer textRenderer, int mouseX, int mouseY)
 	{
-		
+		context.drawCenteredTextWithShadow(textRenderer, Text.literal("ArmorHud Configuration"), screen.width / 2, screen.height/2 - 35, 0xffffff);
 	}
 
 	@Override
@@ -128,7 +137,12 @@ public class ArmorHud extends ModuleBase implements HudRenderCallback
 					matrixStack.scale((float)screenScale, (float)screenScale, (float)screenScale);
 					matrixStack.translate(screenX/(float)screenScale, screenY/(float)screenScale, 0);
 					drawContext.drawItem(item, offset*i, 0);
-					drawContext.drawText(textRenderer, item.getMaxDamage() - item.getDamage() + "", offset*i, -8, color, true);
+					if(ShowPercentage)
+					{
+						drawContext.drawText(textRenderer, percentage + "", offset*i, -8, color, true);
+					}
+					else
+						drawContext.drawText(textRenderer, item.getMaxDamage() - item.getDamage() + "", offset*i, -8, color, true);
 					matrixStack.pop();
 			}
 		}
@@ -142,8 +156,30 @@ public class ArmorHud extends ModuleBase implements HudRenderCallback
 	
 
 	@Override
-	public void OpenSettingsMenu(FireClientMainScreen screen, ButtonWidget button) {
-		// TODO Auto-generated method stub
+	public void OpenSettingsMenu(FireClientMainScreen screen, ButtonWidget button)
+	{
+		enabledButton = ButtonWidget.builder(Text.of("Enabled: " + Enabled), _button ->
+        {
+			Enabled = !Enabled;
+			enabledButton.setMessage(Text.of("Enabled: " + Enabled));
+			enabledButton.setTooltip(Tooltip.of(Text.of("Sets Enabled to:  " + !Enabled)));
+        })
+		.dimensions(screen.width / 2 - 50, screen.height / 2 - 10, 100, 20)
+        .tooltip(Tooltip.of(Text.of("Sets Enabled to: " + !Enabled)))
+        .build();
+
+		percentageButton = ButtonWidget.builder(Text.of("Mode: " + (ShowPercentage ? "Percent" : "Value")), _button ->
+        {
+			ShowPercentage = !ShowPercentage;
+			enabledButton.setMessage(Text.of("Mode: " + (ShowPercentage ? "Percent" : "Value")));
+			enabledButton.setTooltip(Tooltip.of(Text.of("Sets the mode to:  " + (!ShowPercentage ? "Percent" : "Value"))));
+        })
+		.dimensions(screen.width / 2 - 50, screen.height / 2 - 10, 100, 20)
+        .tooltip(Tooltip.of(Text.of("Sets the mode to:  " + (!ShowPercentage ? "Percent" : "Value"))))
+        .build();
+
+		screen.AddDrawableChild(enabledButton);
+		screen.AddDrawableChild(percentageButton);
 		
 	}
 	
@@ -154,25 +190,26 @@ public class ArmorHud extends ModuleBase implements HudRenderCallback
 	}
 
 	@Override
-	public void LoadSettings(Scanner scanner)
+	public void LoadSettings(JsonObject file)
 	{
-		Enabled = Boolean.parseBoolean(scanner.nextLine());
-		PositionX = Integer.parseInt(scanner.nextLine());
-		PositionY = Integer.parseInt(scanner.nextLine());
-		Scale = Double.parseDouble(scanner.nextLine());
+		Enabled = file.get("Enabled").getAsBoolean();
+		PositionX = file.get("PositionX").getAsInt();
+		PositionY = file.get("PositionY").getAsInt();
+		Scale = file.get("Scale").getAsDouble();
+		ShowPercentage = file.get("ShowPercentage").getAsBoolean();
 	}
 
 	@Override
-	public String SaveSettings()
+	public void SaveSettings(JsonObject file)
 	{
-		String output = "";
+		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
+		moduleSettings.put("Enabled", Enabled);
+		moduleSettings.put("PositionX", PositionX);
+		moduleSettings.put("PositionY", PositionY);
+		moduleSettings.put("Scale", Scale);
+		moduleSettings.put("ShowPercentage", ShowPercentage);
 
-		output += Enabled + "\n";
-		output += PositionX + "\n";
-		output += PositionY + "\n";
-		output += Scale + "\n";
-
-		return output;
+		file.addProperty(Name, new Gson().toJson(moduleSettings));
 	}
 
 }

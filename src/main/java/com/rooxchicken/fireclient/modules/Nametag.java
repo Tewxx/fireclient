@@ -1,9 +1,12 @@
 package com.rooxchicken.fireclient.modules;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ibm.icu.lang.UCharacter.WordBreak;
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.client.FireClientside;
@@ -82,17 +85,17 @@ public class Nametag extends ModuleBase implements HudRenderCallback
 	@Override
 	public void RegisterKeyBinds(String category)
 	{
-		UsageKey = KeyBindingHelper.registerKeyBinding(
-				new KeyBinding(KeyName, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, category));
+		// UsageKey = KeyBindingHelper.registerKeyBinding(
+		// 		new KeyBinding(KeyName, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, category));
 		
 	}
 
 	@Override
 	public void CheckKey()
 	{
-		if(UsageKey.wasPressed())
-		{
-		}
+		// if(UsageKey.wasPressed())
+		// {
+		// }
 		
 	}
 
@@ -175,21 +178,20 @@ public class Nametag extends ModuleBase implements HudRenderCallback
 	}
 
 	@Override
-	public void LoadSettings(Scanner scanner)
+	public void LoadSettings(JsonObject file)
 	{
-		Enabled = Boolean.parseBoolean(scanner.nextLine());
-		input = scanner.nextLine();
+		Enabled = file.get("Enabled").getAsBoolean();
+		input = file.get("input").getAsString();
 	}
 
 	@Override
-	public String SaveSettings()
+	public void SaveSettings(JsonObject file)
 	{
-		String output = "";
+		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
+		moduleSettings.put("Enabled", Enabled);
+		moduleSettings.put("input", input);
 
-		output += Enabled + "\n";
-		output += input + "\n";
-
-		return output;
+		file.addProperty(Name, new Gson().toJson(moduleSettings));
 	}
 
 }

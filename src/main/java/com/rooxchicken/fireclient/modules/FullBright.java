@@ -1,7 +1,10 @@
 package com.rooxchicken.fireclient.modules;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.screen.FireClientMainScreen;
 
@@ -133,19 +136,18 @@ public class FullBright extends ModuleBase implements HudRenderCallback
 	}
 
 	@Override
-	public void LoadSettings(Scanner scanner)
+	public void LoadSettings(JsonObject file)
 	{
-		Enabled = Boolean.parseBoolean(scanner.nextLine());
+		Enabled = file.get("Enabled").getAsBoolean();
 	}
 
 	@Override
-	public String SaveSettings()
+	public void SaveSettings(JsonObject file)
 	{
-		String output = "";
+		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
+		moduleSettings.put("Enabled", Enabled);
 
-		output += Enabled + "\n";
-
-		return output;
+		file.addProperty(Name, new Gson().toJson(moduleSettings));
 	}
 
 }

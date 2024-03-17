@@ -12,6 +12,7 @@ import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.client.FireClientside;
 import com.rooxchicken.fireclient.screen.FireClientMainScreen;
 
+import club.minnced.discord.rpc.DiscordRPC;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -36,21 +37,23 @@ import net.minecraft.text.Text;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public class CoordsChat extends ModuleBase implements HudRenderCallback
+public class DiscordRPCModule extends ModuleBase implements HudRenderCallback
 {	
 	private TextFieldWidget messageInput;
 
-	public String Players = "";
+	public String data = "";
 	private int count = 0;
 
 	private LocalDateTime lastSent;
 
+	private DiscordRPC rpc;
+
 	@Override
 	public void Initialize()
 	{
-		Name = "CoordsChat";
+		Name = "DisordRPC";
 		Enabled = false;
-		KeyName = "key.fireclient_coordschat";
+		KeyName = "key.fireclient_discordrpc";
 		
 		Scale = 0;
 		ScaleX = 0;
@@ -64,7 +67,7 @@ public class CoordsChat extends ModuleBase implements HudRenderCallback
 
 		HasLines = false;
 
-		Players = "";
+		data = "";
 
 		FireClient.LOGGER.info("Module: " + Name + " loaded successfully.");
 	}
@@ -78,82 +81,21 @@ public class CoordsChat extends ModuleBase implements HudRenderCallback
 	@Override
 	public void PostInitialization()
 	{
-		Visible = FireClient.FIRECLIENT_WHITELISTED;
-		if(!Visible)
-			Enabled = false;
+		//rpc = DiscordRPC.INSTANCE;
 	}
 
 	@Override
 	public void RegisterKeyBinds(String category)
 	{
-		UsageKey = KeyBindingHelper.registerKeyBinding(
-				new KeyBinding(KeyName, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, category));
+		//UsageKey = KeyBindingHelper.registerKeyBinding(
+				//new KeyBinding(KeyName, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, category));
 		
 	}
 
 	@Override
 	public void CheckKey()
 	{
-		if(UsageKey.wasPressed())
-		{
-			MinecraftClient client = MinecraftClient.getInstance();
-
-			if(count > 14)
-			{
-				if(LocalDateTime.now().toEpochSecond(ZoneOffset.of("Z")) - lastSent.toEpochSecond(ZoneOffset.of("Z")) < 10)
-				{
-					client.inGameHud.getChatHud().addMessage(Text.of("[WARNING] Blocking messages to prevent rate limiting!!"));
-					return;
-				}
-				else
-					count = 0;
-			}
-			else
-			{
-				//HazelsGatekeptMods.LOGGER.info("" + (LocalDateTime.now().toEpochSecond(ZoneOffset.of("Z")) - lastSent.toEpochSecond(ZoneOffset.of("Z"))));
-				if(LocalDateTime.now().toEpochSecond(ZoneOffset.of("Z")) - lastSent.toEpochSecond(ZoneOffset.of("Z")) > 10)
-					count = 0;
-
-				lastSent = LocalDateTime.now();
-			}
-
-			int x,y,z;
-			
-			x = (int)client.player.getPos().x;
-			y = (int)client.player.getPos().y;
-			z = (int)client.player.getPos().z;
-			if(Players == "")
-			{
-				sendChatMessage(" X: " + x + " | Y: " + y + " | Z: " + z);
-				return;
-			}
-
-			String[] players = Players.split(",");
-
-			for(String player : players)
-			{
-				sendChatCommand("msg " + player.trim() + " X: " + x + " | Y: " + y + " | Z: " + z);
-			}
-		}
 		
-	}
-
-	public void sendChatCommand(String msg)
-	{
-		MinecraftClient client = MinecraftClient.getInstance();
-    	ClientPlayNetworkHandler handler = client.getNetworkHandler();
-    	handler.sendChatCommand(msg);
-
-		count++;
-	}
-
-	public void sendChatMessage(String msg)
-	{
-		MinecraftClient client = MinecraftClient.getInstance();
-    	ClientPlayNetworkHandler handler = client.getNetworkHandler();
-    	handler.sendChatMessage(msg);
-
-		count++;
 	}
 
 	@Override
@@ -165,13 +107,13 @@ public class CoordsChat extends ModuleBase implements HudRenderCallback
 	@Override
 	public void Tick()
 	{
-		Players = messageInput.getText();
+		data = messageInput.getText();
 	}
 
 	@Override
 	public void RenderConfiguration(FireClientMainScreen screen, DrawContext context, TextRenderer textRenderer, int mouseX, int mouseY)
 	{
-		context.drawCenteredTextWithShadow(textRenderer, Text.literal("CoordsChat Config"), screen.width / 2, screen.height/2 - 40, 0xffffff);
+		context.drawCenteredTextWithShadow(textRenderer, Text.literal("DiscordRPC Configuration (NOT WORKING! :3 )"), screen.width / 2, screen.height/2 - 35, 0xffffff);
 		context.drawCenteredTextWithShadow(textRenderer, Text.literal("Players (empty for public chat)"), screen.width / 2, screen.height/2 - 20, 0xffffff);
 	}
 	
@@ -194,7 +136,7 @@ public class CoordsChat extends ModuleBase implements HudRenderCallback
 	{
 		messageInput = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, screen.width/2 - 150, screen.height/2, 300, 15, Text.of("Message"));
 		messageInput.setMaxLength(256);
-		messageInput.setText(Players);
+		messageInput.setText(data);
 
 		screen.AddDrawableChild(messageInput);
 	}
@@ -209,7 +151,7 @@ public class CoordsChat extends ModuleBase implements HudRenderCallback
 	public void LoadSettings(JsonObject file)
 	{
 		Enabled = file.get("Enabled").getAsBoolean();
-		Players = file.get("Players").getAsString();
+		data = file.get("data").getAsString();
 	}
 
 	@Override
@@ -217,7 +159,7 @@ public class CoordsChat extends ModuleBase implements HudRenderCallback
 	{
 		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
 		moduleSettings.put("Enabled", Enabled);
-		moduleSettings.put("Players", Players);
+		moduleSettings.put("data", data);
 
 		file.addProperty(Name, new Gson().toJson(moduleSettings));
 	}

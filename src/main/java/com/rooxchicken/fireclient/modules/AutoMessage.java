@@ -1,9 +1,12 @@
 package com.rooxchicken.fireclient.modules;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ibm.icu.lang.UCharacter.WordBreak;
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.screen.FireClientMainScreen;
@@ -186,23 +189,22 @@ public class AutoMessage extends ModuleBase implements HudRenderCallback
 	}
 
 	@Override
-	public void LoadSettings(Scanner scanner)
+	public void LoadSettings(JsonObject file)
 	{
-		Enabled = Boolean.parseBoolean(scanner.nextLine());
-		Automatic = Boolean.parseBoolean(scanner.nextLine());
-		message = scanner.nextLine();
+		Enabled = file.get("Enabled").getAsBoolean();
+		Automatic = file.get("Automatic").getAsBoolean();
+		message = file.get("message").getAsString();
 	}
 
 	@Override
-	public String SaveSettings()
+	public void SaveSettings(JsonObject file)
 	{
-		String output = "";
+		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
+		moduleSettings.put("Enabled", Enabled);
+		moduleSettings.put("Automatic", Automatic);
+		moduleSettings.put("message", message);
 
-		output += Enabled + "\n";
-		output += Automatic + "\n";
-		output += message + "\n";
-
-		return output;
+		file.addProperty(Name, new Gson().toJson(moduleSettings));
 	}
 
 }

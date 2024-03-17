@@ -1,10 +1,13 @@
 package com.rooxchicken.fireclient.modules;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 import org.apache.commons.codec.net.PercentCodec;
 import org.lwjgl.glfw.GLFW;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.client.FireClientside;
 import com.rooxchicken.fireclient.screen.FireClientMainScreen;
@@ -84,7 +87,7 @@ public class AngleDisplay extends ModuleBase implements HudRenderCallback
 	@Override
 	public void RenderConfiguration(FireClientMainScreen screen, DrawContext context, TextRenderer textRenderer, int mouseX, int mouseY)
 	{
-		context.drawCenteredTextWithShadow(textRenderer, Text.literal("ArmorHud Configuration"), screen.width / 2, screen.height/2 - 35, 0xffffff);
+		context.drawCenteredTextWithShadow(textRenderer, Text.literal("AngleDisplay Configuration"), screen.width / 2, screen.height/2 - 35, 0xffffff);
 	}
 
 	@Override
@@ -146,20 +149,20 @@ public class AngleDisplay extends ModuleBase implements HudRenderCallback
 	{
 		
 	}
-
+	
 	@Override
-	public void LoadSettings(Scanner scanner)
+	public void LoadSettings(JsonObject file)
 	{
-		Enabled = Boolean.parseBoolean(scanner.nextLine());
+		Enabled = file.get("Enabled").getAsBoolean();
 	}
 
 	@Override
-	public String SaveSettings()
+	public void SaveSettings(JsonObject file)
 	{
-		String output = "";
+		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
+		moduleSettings.put("Enabled", Enabled);
 
-		output += Enabled + "\n";
-		return output;
+		file.addProperty(Name, new Gson().toJson(moduleSettings));
 	}
 
 }

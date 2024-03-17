@@ -2,6 +2,7 @@ package com.rooxchicken.fireclient.modules;
 
 import java.util.Scanner;
 
+import com.google.gson.JsonObject;
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.screen.FireClientMainScreen;
 
@@ -63,8 +64,8 @@ public abstract class ModuleBase
 	public abstract void UpdateScreen(boolean mouseDown, int mouseX, int mouseY);
 	public abstract void Tick();
 
-	public abstract void LoadSettings(Scanner scanner);
-	public abstract String SaveSettings();
+	public abstract void LoadSettings(JsonObject file);
+	public abstract void SaveSettings(JsonObject file);
 
 	public void convertPosToScreen()
 	{
