@@ -51,7 +51,8 @@ public class DiscordRPCModule extends ModuleBase implements HudRenderCallback
 	@Override
 	public void Initialize()
 	{
-		Name = "DisordRPC";
+		Name = "DiscordRPC";
+		Description = "WIP :3";
 		Enabled = false;
 		KeyName = "key.fireclient_discordrpc";
 		

@@ -45,6 +45,7 @@ public class Coordinates extends ModuleBase implements HudRenderCallback
 	public void Initialize()
 	{
 		Name = "Coordinates";
+		Description = "Simple coordinates display.\n\nHas an optional mode that opens a new window with the player's coordinates.\nUseful for streamers";
 		Enabled = true;
 		KeyName = "key.fireclient_coordinates";
 
@@ -95,7 +96,7 @@ public class Coordinates extends ModuleBase implements HudRenderCallback
 	@Override
 	public void Update()
 	{
-		if(!Enabled || !window)
+		if(!window)
 		{
 			if(p != null)
 				p.destroy();
@@ -108,6 +109,11 @@ public class Coordinates extends ModuleBase implements HudRenderCallback
 		{
 			p = null;
 			window = false;
+			if(SettingsOpen)
+			{
+				windowButton.setMessage(Text.of("Window Mode: " + window));
+				windowButton.setTooltip(Tooltip.of(Text.of((window ? "Disables" : "Enables") + " the Window Mode functionality")));
+			}
 			return;
 		}
 
@@ -207,12 +213,6 @@ public class Coordinates extends ModuleBase implements HudRenderCallback
 		enabledButton = ButtonWidget.builder(Text.of("Enabled: " + Enabled), _button ->
         {
 			Enabled = !Enabled;
-			if(!Enabled)
-			{
-				window = false;
-				windowButton.setMessage(Text.of("Window Mode: " + window));
-				windowButton.setTooltip(Tooltip.of(Text.of((window ? "Disables" : "Enables") + " the Window Mode functionality")));
-			}
 			enabledButton.setMessage(Text.of("Enabled: " + Enabled));
 			enabledButton.setTooltip(Tooltip.of(Text.of("Sets Enabled to: " + !Enabled)));
         })

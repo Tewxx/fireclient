@@ -37,6 +37,7 @@ public class ToggleablePieChart extends ModuleBase
 	public void Initialize()
 	{
 		Name = "PieChart";
+		Description = "Allows the player to toggle the debug piechart,\nalong with change it's shape and position.\n\nIf the pie chart is offscreen, reset it\nwith the button!";
 		KeyName = "key.fireclient_togglepiechart";
 		
 		PositionX = 1590;
@@ -246,6 +247,12 @@ public class ToggleablePieChart extends ModuleBase
 
 			HandleLines(screen, context, textRenderer, mouseX, mouseY);
 		}
+	}
+
+	@Override
+	public void HandleScaling(int mouseX, int mouseY)
+	{
+		Scale = oldScale * ((length-(Math.min(mouseX - oldMouseX + 0.0, mouseY - oldMouseY + 0.0)))/length);
 	}
 
 	@Override

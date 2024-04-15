@@ -3,57 +3,41 @@ package com.rooxchicken.fireclient.modules;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.screen.FireClientMainScreen;
 
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 
-public class FullBright extends ModuleBase implements HudRenderCallback
+public class ScrollClick extends ModuleBase implements HudRenderCallback
 {
 	private ButtonWidget enabledButton;
 
-	private double oldGamma = 0;
+	public int clicks = 0;
 	
 	@Override
 	public void Initialize()
 	{
 		Name = "FullBright";
-		Description = "Simple module to set the in-game brightness to max";
+		Description = "Allows the scroll wheel to act as a click input";
 		Enabled = true;
-		KeyName = "key.fireclient_fullbright";
-		
-		Scale = 0;
-		ScaleX = 0;
-		ScaleY = 0;
-		
-		x2Mod = 0;
-		y1Mod = 0;
-		y2Mod = 0;
+		KeyName = "key.hazelgatekept_scrollclick";
 
 		HasLines = false;
 
 		FireClient.LOGGER.info("Module: " + Name + " loaded successfully.");
-	}
-
-	public void CheckStatus()
-	{
-		MinecraftClient client = MinecraftClient.getInstance();
-
-		if(Enabled)
-		{
-			oldGamma = client.options.getGamma().getValue();
-			client.options.getGamma().setValue(100000.0);
-		}
-		else
-			client.options.getGamma().setValue(oldGamma);
 	}
 
 	@Override
@@ -64,14 +48,16 @@ public class FullBright extends ModuleBase implements HudRenderCallback
 	@Override
 	public void PostInitialization()
 	{
-		CheckStatus();
+		Visible = FireClient.FIRECLIENT_WHITELISTED;
+		if(!Visible)
+			Enabled = false;
 	}
 
 	@Override
 	public void RegisterKeyBinds(String category)
 	{
-		//UsageKey = KeyBindingHelper.registerKeyBinding(
-				//new KeyBinding(KeyName, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_<KEY>, category));
+		UsageKey = KeyBindingHelper.registerKeyBinding(
+				new KeyBinding(KeyName, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_COMMA, category));
 		
 	}
 
@@ -119,7 +105,6 @@ public class FullBright extends ModuleBase implements HudRenderCallback
 		enabledButton = ButtonWidget.builder(Text.of("FullBright: " + Enabled), _button ->
         {
         	Enabled = !Enabled;
-			CheckStatus();
 			enabledButton.setMessage(Text.of("FullBright: " + Enabled));
 			enabledButton.setTooltip(Tooltip.of(Text.of("Sets fullbright to: " + !Enabled)));
         })

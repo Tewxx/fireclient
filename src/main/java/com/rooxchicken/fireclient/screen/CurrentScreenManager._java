@@ -1,0 +1,14 @@
+package com.rooxchicken.fireclient.screen;
+
+import java.util.ArrayList;
+
+import net.minecraft.client.gui.widget.Widget;
+
+public class CurrentScreenManager
+{
+    private static ArrayList<Widget> widgetsToAdd = new ArrayList<Widget>();;
+
+    public static void addWidget(Widget widget) { widgetsToAdd.add(widget); }
+    public static ArrayList<Widget> getWidgets() { return widgetsToAdd; }
+    public static ArrayList<Widget> getWidgetsAndClear() { ArrayList<Widget> widgets = new ArrayList<Widget>(widgetsToAdd); widgetsToAdd.clear(); return widgets; }
+}

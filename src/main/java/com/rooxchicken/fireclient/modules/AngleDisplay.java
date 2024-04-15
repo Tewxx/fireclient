@@ -36,12 +36,22 @@ public class AngleDisplay extends ModuleBase implements HudRenderCallback
 	public void Initialize()
 	{
 		Name = "AngleDisplay";
+		Description = "Shows your up/down angle (pitch)\nin the bottom left of the screen.\n\nWill be movable soon (tm)";
 		Enabled = true;
 		KeyName = "key.hazelgatekept_angledisplay";
-		Scale = 1;
-		
-		HasLines = false;
 
+		PositionX = -200;
+		PositionY = -100;
+
+		Scale = 1;
+		SmallestSize = 1/3.0;
+		SnapIncrement = 3;
+
+		x1Mod = -2;
+		x2Mod = 34;
+		y1Mod = -24;
+		y2Mod = -6;
+		
 		FireClient.LOGGER.info("Module: " + Name + " loaded successfully.");
 	}
 
@@ -75,7 +85,7 @@ public class AngleDisplay extends ModuleBase implements HudRenderCallback
 	@Override
 	public void Update()
 	{
-		
+		//FireClient.LOGGER.info("" + screenScale);
 	}
 	
 	@Override
@@ -94,7 +104,7 @@ public class AngleDisplay extends ModuleBase implements HudRenderCallback
 	public void BeforeLines(DrawContext context)
 	{
 		onHudRender(context, 0);
-		y1Mod = (int)(-10 * Scale);
+		y1Mod = (int)(-24 * Scale);
 	}
 	
 	@Override
@@ -105,17 +115,13 @@ public class AngleDisplay extends ModuleBase implements HudRenderCallback
 		
 		MinecraftClient client = MinecraftClient.getInstance();
 		textRenderer = client.textRenderer;
-		
-		PositionX = 8;
-		PositionY = client.getWindow().getScaledHeight();
 
-		Scale = 2/3.0;
+		//FireClient.LOGGER.info(screenX + " | " + screenY);
 
 		MatrixStack matrixStack = drawContext.getMatrices();
 		matrixStack.push();
-		matrixStack.scale((float)Scale, (float)Scale, (float)Scale);
-		float posX = PositionX/(float)Scale;
-		matrixStack.translate(posX, PositionY/(float)Scale, 0);
+		matrixStack.scale((float)screenScale, (float)screenScale, (float)screenScale);
+		matrixStack.translate(screenX/(float)screenScale, screenY/(float)screenScale, 0);
 		drawContext.drawText(textRenderer, String.format("%.2f", -client.player.getPitch()), 0, -16, 0xFFFFFF, true);
 		//drawContext.drawText(textRenderer, client.player.getLeaningPitch(0) + "", 0, 0 - 20, 0xFFFFFF, true);
 		matrixStack.pop();

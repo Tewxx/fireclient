@@ -1,6 +1,9 @@
 package com.rooxchicken.fireclient;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Mouse;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
@@ -24,13 +27,16 @@ import com.google.gson.reflect.TypeToken;
 import com.rooxchicken.fireclient.modules.AngleDisplay;
 import com.rooxchicken.fireclient.modules.ArmorHud;
 import com.rooxchicken.fireclient.modules.AutoMessage;
+import com.rooxchicken.fireclient.modules.BowSwap;
 import com.rooxchicken.fireclient.modules.Coordinates;
 import com.rooxchicken.fireclient.modules.CoordsChat;
 import com.rooxchicken.fireclient.modules.DiscordRPCModule;
+import com.rooxchicken.fireclient.modules.Dummy;
 import com.rooxchicken.fireclient.modules.FullBright;
 import com.rooxchicken.fireclient.modules.ModuleBase;
 import com.rooxchicken.fireclient.modules.Nametag;
 import com.rooxchicken.fireclient.modules.RenderWorld;
+import com.rooxchicken.fireclient.modules.ScrollClick;
 import com.rooxchicken.fireclient.modules.ToggleablePieChart;
 
 import it.unimi.dsi.fastutil.Hash;
@@ -42,7 +48,7 @@ public class FireClient implements ModInitializer
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("fireclient");
     
-    public static String FIRECLIENT_VERSION = "0.1.9";
+    public static String FIRECLIENT_VERSION = "0.3";
     public static boolean FIRECLIENT_CONFIGFAIL = false;
     public static boolean FIRECLIENT_IGNOREFAIL = false;
 	public static boolean FIRECLIENT_WHITELISTED = false;
@@ -52,8 +58,8 @@ public class FireClient implements ModInitializer
     
     public static boolean Setting_Branding = true;
     public static boolean Setting_DEBUG = false;
-	public static boolean Setting_CustomCape = true;
 
+	public static boolean Setting_CustomCape = true;
     public static boolean Setting_HideShieldsInRiptide = true;
 
     public static HashMap<String, ModuleBase> Modules;
@@ -64,13 +70,18 @@ public class FireClient implements ModInitializer
 		LOGGER.info("FireClient V" + FIRECLIENT_VERSION + " (1987)");
 
 		Modules = new HashMap<String, ModuleBase>();
+		Modules.put("Dummy1", new Dummy());
+		Modules.put("Dummy2", new Dummy());
+		Modules.put("Dummy3", new Dummy());
 		Modules.put("ToggleablePieChart", new ToggleablePieChart());
+		Modules.put("ScrollClick", new ScrollClick());
 		Modules.put("RenderWorld", new RenderWorld());
 		Modules.put("Nametag", new Nametag());
 		Modules.put("FullBright", new FullBright());
 		Modules.put("DiscordRPC", new DiscordRPCModule());
 		Modules.put("CoordsChat", new CoordsChat());
 		Modules.put("Coordinates", new Coordinates());
+		Modules.put("BowSwap", new BowSwap());
 		Modules.put("AutoMessage", new AutoMessage());
 		Modules.put("ArmorHud", new ArmorHud());
 		Modules.put("AngleDisplay", new AngleDisplay());
@@ -79,7 +90,7 @@ public class FireClient implements ModInitializer
 		{
 			module.Initialize();
 		}
-		
+
 		try
 		{
 			File settingsFile = new File("fireclient.txt");
@@ -98,8 +109,18 @@ public class FireClient implements ModInitializer
 			
 			String version = file.get("FIRECLIENT_CONFIG_VERSION").getAsString();
 
-			if(version == FIRECLIENT_VERSION)
+			if(!version.equals(FIRECLIENT_VERSION))
+			{
 				LOGGER.warn("Fireclient version mismatch! Running V" + FIRECLIENT_VERSION + " but config is V" + version + "! Will attempt to update!!");
+				File backupFile = new File("fireclient-" + version + "_bk.txt");
+				FileWriter writer = new FileWriter(backupFile);
+				Scanner bkScanner = new Scanner(settingsFile);
+
+				writer.write(bkScanner.nextLine());
+
+				bkScanner.close();
+				writer.close();
+			}
 
 			for(ModuleBase module : Modules.values())
 			{
@@ -109,7 +130,7 @@ public class FireClient implements ModInitializer
 				}
 				catch(Exception e)
 				{
-					LOGGER.error("Module " + module.Name + " has a *missing or broken* config! If you are updating FireClient versions, this is safe to ignore! (error regardless) " + e.getMessage());
+					LOGGER.error("Module " + module.Name + " has a *missing or broken* config! If you are updating FireClient versions, this is safe to ignore! " + e.getMessage());
 				}
 			}
 
@@ -129,14 +150,14 @@ public class FireClient implements ModInitializer
 		}
 	}
 	
-	public static void saveConfiguration()
+	public static void saveConfiguration(String path)
 	{
 		if(FIRECLIENT_CONFIGFAIL)
 			return;
 
 		try
 		{
-			File settingsFile = new File("fireclient.txt");
+			File settingsFile = new File(path);
 			if(settingsFile.createNewFile())
 			{
 				LOGGER.info("Created new FireClient configuration file.");
@@ -156,6 +177,11 @@ public class FireClient implements ModInitializer
 			FIRECLIENT_CONFIGFAIL = true;
 			FIRECLIENT_CONFIGFAILCOUNT++;
 		}
+	}
+	
+	public static void saveConfiguration()
+	{
+		saveConfiguration("fireclient.txt");
 	}
 	
 	public static JsonObject settingsToConfig()

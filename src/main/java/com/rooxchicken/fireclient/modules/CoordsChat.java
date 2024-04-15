@@ -49,21 +49,13 @@ public class CoordsChat extends ModuleBase implements HudRenderCallback
 	public void Initialize()
 	{
 		Name = "CoordsChat";
+		Description = "Sends the player's coordinates in chat, or to specific users with /msg.\n\nTo specify users, put their usernames in the textbox with this format:\nPlayer1,Player2,Player3";
 		Enabled = false;
 		KeyName = "key.fireclient_coordschat";
 		
-		Scale = 0;
-		ScaleX = 0;
-		ScaleY = 0;
-		
-		x2Mod = 0;
-		y1Mod = 0;
-		y2Mod = 0;
-
-		lastSent = LocalDateTime.now();
-
 		HasLines = false;
-
+		
+		lastSent = LocalDateTime.now();
 		Players = "";
 
 		FireClient.LOGGER.info("Module: " + Name + " loaded successfully.");

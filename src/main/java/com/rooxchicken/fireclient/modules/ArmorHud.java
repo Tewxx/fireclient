@@ -36,6 +36,7 @@ public class ArmorHud extends ModuleBase implements HudRenderCallback
 	public void Initialize()
 	{
 		Name = "ArmorHud";
+		Description = "Displays the armor's durability.\nHas a toggleable percentage mode,\nwhich shows thepercentage of the armor\ninstead of the raw number.";
 		Enabled = true;
 		KeyName = "key.fireclient_armorhud";
 		SmallestSize = 0.6;
@@ -139,7 +140,12 @@ public class ArmorHud extends ModuleBase implements HudRenderCallback
 					drawContext.drawItem(item, offset*i, 0);
 					if(ShowPercentage)
 					{
-						drawContext.drawText(textRenderer, percentage + "", offset*i, -8, color, true);
+						String txt = "";
+						if(percentage == 1)
+							txt = "1.0";
+						else
+							txt = String.format("%.2f", percentage).substring(1);
+						drawContext.drawText(textRenderer, txt, offset*i, -8, color, true);
 					}
 					else
 						drawContext.drawText(textRenderer, item.getMaxDamage() - item.getDamage() + "", offset*i, -8, color, true);
@@ -164,17 +170,17 @@ public class ArmorHud extends ModuleBase implements HudRenderCallback
 			enabledButton.setMessage(Text.of("Enabled: " + Enabled));
 			enabledButton.setTooltip(Tooltip.of(Text.of("Sets Enabled to:  " + !Enabled)));
         })
-		.dimensions(screen.width / 2 - 50, screen.height / 2 - 10, 100, 20)
+		.dimensions(screen.width / 2 - 110, screen.height / 2 - 10, 100, 20)
         .tooltip(Tooltip.of(Text.of("Sets Enabled to: " + !Enabled)))
         .build();
 
 		percentageButton = ButtonWidget.builder(Text.of("Mode: " + (ShowPercentage ? "Percent" : "Value")), _button ->
         {
 			ShowPercentage = !ShowPercentage;
-			enabledButton.setMessage(Text.of("Mode: " + (ShowPercentage ? "Percent" : "Value")));
-			enabledButton.setTooltip(Tooltip.of(Text.of("Sets the mode to:  " + (!ShowPercentage ? "Percent" : "Value"))));
+			percentageButton.setMessage(Text.of("Mode: " + (ShowPercentage ? "Percent" : "Value")));
+			percentageButton.setTooltip(Tooltip.of(Text.of("Sets the mode to:  " + (!ShowPercentage ? "Percent" : "Value"))));
         })
-		.dimensions(screen.width / 2 - 50, screen.height / 2 - 10, 100, 20)
+		.dimensions(screen.width / 2 + 10, screen.height / 2 - 10, 100, 20)
         .tooltip(Tooltip.of(Text.of("Sets the mode to:  " + (!ShowPercentage ? "Percent" : "Value"))))
         .build();
 

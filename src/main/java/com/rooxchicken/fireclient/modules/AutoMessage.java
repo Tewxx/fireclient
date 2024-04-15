@@ -44,6 +44,7 @@ public class AutoMessage extends ModuleBase implements HudRenderCallback
 	public void Initialize()
 	{
 		Name = "AutoMessage";
+		Description = "Stores the last sent message command,\nand inputs it into the chat box when the key is pressed.\nPrevents the repetitive typing of /r and /msg <PLAYER>\n\nAutomatic mode grabs the last sent command and\nwill input it into the chat box.\nManual mode has the user manually type in the filled in command.";
 		Enabled = false;
 		KeyName = "key.fireclient_automessage";
 		

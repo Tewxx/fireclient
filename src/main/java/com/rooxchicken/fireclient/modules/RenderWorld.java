@@ -33,6 +33,7 @@ public class RenderWorld extends ModuleBase implements HudRenderCallback
 	public void Initialize()
 	{
 		Name = "RenderWorld";
+		Description = "Module made to allow for the toggling of F3+A,\nbut that has since been patched, so this module\nis now a cheat! Beware!!";
 		Enabled = false;
 		KeyName = "key.fireclient_renderworld";
 		

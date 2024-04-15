@@ -53,16 +53,9 @@ public class Nametag extends ModuleBase implements HudRenderCallback
 	public void Initialize()
 	{
 		Name = "Nametag";
+		Description = "Allows for the customization of the namtag.";
 		Enabled = false;
 		KeyName = "key.fireclient_nametag";
-	
-		Scale = 0;
-		ScaleX = 0;
-		ScaleY = 0;
-		
-		x2Mod = 0;
-		y1Mod = 0;
-		y2Mod = 0;
 
 		HasLines = false;
 
@@ -108,7 +101,7 @@ public class Nametag extends ModuleBase implements HudRenderCallback
 	@Override
 	public void Tick()
 	{
-		
+		input = messageInput.getText();
 	}
 
 	@Override
@@ -182,6 +175,10 @@ public class Nametag extends ModuleBase implements HudRenderCallback
 	{
 		Enabled = file.get("Enabled").getAsBoolean();
 		input = file.get("input").getAsString();
+
+		RenderNametags = file.get("RenderNametags").getAsBoolean();
+		RenderOwnNametag = file.get("Enabled").getAsBoolean();
+
 	}
 
 	@Override
@@ -190,6 +187,9 @@ public class Nametag extends ModuleBase implements HudRenderCallback
 		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
 		moduleSettings.put("Enabled", Enabled);
 		moduleSettings.put("input", input);
+
+		moduleSettings.put("RenderNametags", RenderNametags);
+		moduleSettings.put("RenderOwnNametag", RenderOwnNametag);
 
 		file.addProperty(Name, new Gson().toJson(moduleSettings));
 	}

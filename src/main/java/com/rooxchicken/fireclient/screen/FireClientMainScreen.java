@@ -32,6 +32,8 @@ public class FireClientMainScreen extends Screen
 	public boolean ObjectSelected = false;
 	
 	private ArrayList<ButtonWidget> moduleButtons;
+	private ModuleBase activeModule;
+
 	public FireClientMainScreen()
 	{
 		super(Text.of("FireClient Main Config"));
@@ -94,11 +96,20 @@ public class FireClientMainScreen extends Screen
 					submenu = 2;
 					module.OpenSettingsMenu(this, button);
 					module.SettingsOpen = true;
+					activeModule = module;
 
 					for(ButtonWidget _module : moduleButtons)
 					{
 						_module.visible = false;
 					}
+
+					addDrawableChild(ButtonWidget.builder(Text.of("About " + activeModule.Name), abtbutton ->
+					{
+						activeModule.SettingsOpen = false;
+						submenu = 4;
+						clearAndInit();
+					}
+					).dimensions(width - 120, height - 30, 100, 20).tooltip(Tooltip.of(Text.of("Gives the description of the " + activeModule.Name + " module."))).build());
 				})
 					.dimensions(width/2 + ((buttonIndex%3) * 90)-130, height / 2 + (30 * ((buttonIndex/3)-1)), 80, 20)
 					.build());
@@ -223,6 +234,11 @@ public class FireClientMainScreen extends Screen
             	goToDefaultMenu();
             	this.clearAndInit();
             	break;
+
+			case 4:
+				submenu = 2;
+				this.clearAndInit();
+				break;
             	
 			case 3:
 				goToDefaultMenu();
@@ -258,20 +274,23 @@ public class FireClientMainScreen extends Screen
 			context.drawCenteredTextWithShadow(textRenderer, Text.literal("Modules"), width / 2, height/2 - 60, 0xffffff);
 			break;
     	case 2:
-    		for(ModuleBase module : FireClient.Modules.values())
-        	{
-        		if(module.SettingsOpen)
-				{
-        			module.RenderConfiguration(this, context, textRenderer, mouseX, mouseY);
-        			module.HandleLines(this, context, textRenderer, mouseX, mouseY);
-				}
-        	}
+			activeModule.RenderConfiguration(this, context, textRenderer, mouseX, mouseY);
+			activeModule.HandleLines(this, context, textRenderer, mouseX, mouseY);
     		break;
 		case 3:
 			context.drawCenteredTextWithShadow(textRenderer, Text.literal("FireClient Config"), width / 2, 10, 0xffffff);
 			context.drawCenteredTextWithShadow(textRenderer, Text.literal("Settings"), width / 2, height/2 - 60, 0xffffff);
 			if(FireClient.FIRECLIENT_WHITELISTED)
 				context.drawText(textRenderer, Text.literal("You are whitelisted!"), 4, height - 12, 0xAAAAAA, true);
+			break;
+		
+		case 4:
+			int i = 0;
+			for(String line : activeModule.Description.split("\n"))
+			{
+				context.drawCenteredTextWithShadow(textRenderer, Text.literal(line), width / 2, height/2 - 60 + (i * 12), 0xffffff);
+				i++;
+			}
 			break;
     	}
     	
@@ -336,15 +355,21 @@ public class FireClientMainScreen extends Screen
         	break;
         	
         case 2:
-			for(ModuleBase module : FireClient.Modules.values())
-			{
-	    		if(module.SettingsOpen)
-	    			module.OpenSettingsMenu(this, settingsButton);
-			}
+			activeModule.OpenSettingsMenu(this, settingsButton);
 			for(ButtonWidget _module : moduleButtons)
 			{
 				_module.visible = false;
 			}
+
+			addDrawableChild(ButtonWidget.builder(Text.of("About " + activeModule.Name), abtbutton ->
+			{
+				activeModule.SettingsOpen = false;
+				submenu = 4;
+				clearAndInit();
+				goToSubmenu();
+			}
+			).dimensions(width - 120, height - 30, 100, 20).tooltip(Tooltip.of(Text.of("Gives the description of the " + activeModule.Name + " module."))).build());
+
 			modulesButton.visible = false;
 			settingsButton.visible = false;
 			break;
@@ -355,6 +380,17 @@ public class FireClientMainScreen extends Screen
 			for(ButtonWidget m : fireclientSettings)
 				addDrawableChild(m);
 
+			break;
+
+		case 4:
+			modulesButton.visible = false;
+			settingsButton.visible = false;
+			addDrawableChild(ButtonWidget.builder(Text.of("Back"), abtbutton ->
+			{
+				submenu = 2;
+				clearAndInit();
+			}
+			).dimensions(width - 100, height - 30, 80, 20).tooltip(Tooltip.of(Text.of("Returns to the module settings."))).build());
 			break;
         }
     }

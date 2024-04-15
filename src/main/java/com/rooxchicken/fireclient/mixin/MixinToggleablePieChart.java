@@ -41,33 +41,6 @@ class MixinWindowModification {
 				info.setReturnValue((int)((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).ScaleY);
 		}
     }
-	// @Inject(method = "onWindowSizeChanged(JII)V", at = @At("HEAD"), cancellable = true)
-	// private void onWindowSizeChanged(long window, int width, int height, CallbackInfo info)
-	// {
-	// 	double multiplierX = (width / (oldWindowWidth + 0.0));
-	// 	double multiplierY = (height / (oldWindowHeight + 0.0));
-
-	// 	FireClient.LOGGER.info("" + multiplierX);
-	// 	for(ModuleBase module : FireClient.Modules.values())
-	// 	{
-	// 		module.ResolutionUpdated(multiplierX-1, multiplierY-1);
-	// 	}
-
-	// 	oldWindowWidth = width;
-	// 	oldWindowHeight = height;
-
-	// 	// if(((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).oldSizeX == -1)
-	// 	// {
-	// 	// 	((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).oldSizeX = width;
-	// 	// 	((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).oldSizeY = height;
-	// 	// }
-		
-	// 	// ((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).PositionX *= (width + 0.0) / ((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).oldSizeX;
-	// 	// ((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).PositionY *= (height + 0.0) / ((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).oldSizeY;
-		
-	// 	// ((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).oldSizeX = width;
-	// 	// ((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).oldSizeY = height;
-	// }
 }
 
 @Mixin(MinecraftClient.class)

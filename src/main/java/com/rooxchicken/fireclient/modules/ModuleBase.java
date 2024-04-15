@@ -15,10 +15,12 @@ import net.minecraft.client.option.KeyBinding;
 public abstract class ModuleBase
 {
 	public String Name;
+	public String Description;
 	public boolean Enabled;
 	public boolean Visible = true;
 	public boolean HasLines = true;
 	public double SmallestSize = 0.2;
+	public double SnapIncrement = 4.0; //4 = 1/4 = 0.25 :3
 	
 	public String KeyName;
 	public KeyBinding UsageKey;
@@ -80,11 +82,11 @@ public abstract class ModuleBase
 
 		// if(screenX > client.getWindow().getWidth()/scalingFactor)
 		// 	screenX = client.getWindow().getWidth()/(int)scalingFactor;
+		screenScale = Scale;
 
-		if(ManipulationStatus == 2 && MouseStatus == 1)
-			screenScale = ((int)(Scale*4))/4.0;
-		else
-			screenScale = Scale;
+		// if(ManipulationStatus == 2 && MouseStatus == 1)
+		// 	screenScale = ((int)(Scale*SnapIncrement))/SnapIncrement;
+		// else
 		//FireClient.LOGGER.info(scalingFactor + "");
 
 		//FireClient.LOGGER.info(Name + ":" + screenX + " | " + screenY + "   |    " + client.getWindow().getWidth()/scalingFactor);
@@ -190,34 +192,7 @@ public abstract class ModuleBase
 		
 		if(ManipulationStatus == 2)
 		{
-			if(!_manualScale)
-			{
-				double mScale = Math.max(mouseX - oldMouseX + 0.0, mouseY - oldMouseY + 0.0);
-				if(mScale < 0)
-					mScale = Math.min(mouseX - oldMouseX + 0.0, mouseY - oldMouseY + 0.0);
-
-				double val = oldScale * ((length-mScale)/length);
-
-
-				Scale = val;
-
-				if(Scale < SmallestSize)
-				{
-					Scale = SmallestSize;
-					return;
-				}
-
-
-				PositionX = (int)(oldPositionX + (oldScale-screenScale)*80);
-				PositionY = (int)(oldPositionY + (oldScale-screenScale)*15);
-			}
-			else
-			{
-				Scale = oldScale * ((length-(Math.min(mouseX - oldMouseX + 0.0, mouseY - oldMouseY + 0.0)))/length);
-			}
-
-			if(MouseStatus == 1)
-				Scale = ((int)(Scale*4))/4.0;
+			HandleScaling(mouseX, mouseY);
 
 			if(Scale < SmallestSize)
 				Scale = SmallestSize;
@@ -227,11 +202,29 @@ public abstract class ModuleBase
 		
 		oldMouseX = mouseX;
 		oldMouseY = mouseY;
-		
-		//FireClient.LOGGER.info(PositionX + Name + PositionY);
+	}
 
-		//FireClient.LOGGER.info("Module: " + Name + " | (" + x1 + ", " + x2 + ")u(" + y1 + ", " + y2 + "), " + Scale);
-		//FireClient.LOGGER.info("Module: " + Name + " | (" + mouseX + ", " + mouseY + ")");
+	public void HandleScaling(int mouseX, int mouseY)
+	{
+		double mScale = Math.max(mouseX - oldMouseX + 0.0, mouseY - oldMouseY + 0.0);
+		// if(mScale < 0)
+		// 	mScale = Math.min(mouseX - oldMouseX + 0.0, mouseY - oldMouseY + 0.0);
+
+		double val = oldScale * ((length-mScale)/length);
+
+		Scale = val;
+
+		if(Scale < SmallestSize)
+		{
+			Scale = SmallestSize;
+			return;
+		}
+
+		if(MouseStatus == 1)
+			Scale = ((int)(Scale*SnapIncrement))/SnapIncrement;
+	
+		PositionX = (int)(oldPositionX + (oldScale-Scale)*x2Mod);
+		PositionY = (int)(oldPositionY + (oldScale-Scale)*y2Mod);
 	}
 	
 	protected boolean AABBCheck(int mouseX, int mouseY, int x1, int x2, int y1, int y2)

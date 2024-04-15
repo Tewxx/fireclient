@@ -3,13 +3,16 @@
 	"package": "com.rooxchicken.fireclient.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"MixinWindowModification",
-		"MixinSimpleOption",
-		"MixinWorldRenderer",
+		"MixinHideShieldsInRiptide",
+		"MixinCustomCapes",
+		"MixinRemoveOptionLimits",
+		"MixinFullbright",
+		"MixinRenderNametags",
+		"MixinRenderWorld",
+		"MixinScrollAdder",
+		"MixinScrollItemUse",
 		"MixinDebugPieChart",
-		"Mixin_HeldItemRenderer",
-		"MixinAbstractClientPlayerEntity",
-		"MixinLivingEntityRenderer"
+		"MixinWindowModification"
 	],
 	"injectors": {
 		"defaultRequire": 1

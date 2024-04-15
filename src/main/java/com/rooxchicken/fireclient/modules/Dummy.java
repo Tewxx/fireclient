@@ -16,44 +16,21 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
-public class FullBright extends ModuleBase implements HudRenderCallback
+public class Dummy extends ModuleBase implements HudRenderCallback
 {
 	private ButtonWidget enabledButton;
-
-	private double oldGamma = 0;
 	
 	@Override
 	public void Initialize()
 	{
-		Name = "FullBright";
-		Description = "Simple module to set the in-game brightness to max";
+		Name = "Dummy";
+		Description = "Dummy module for UI testing";
 		Enabled = true;
-		KeyName = "key.fireclient_fullbright";
-		
-		Scale = 0;
-		ScaleX = 0;
-		ScaleY = 0;
-		
-		x2Mod = 0;
-		y1Mod = 0;
-		y2Mod = 0;
+		KeyName = "key.fireclient_dummy";
 
 		HasLines = false;
 
 		FireClient.LOGGER.info("Module: " + Name + " loaded successfully.");
-	}
-
-	public void CheckStatus()
-	{
-		MinecraftClient client = MinecraftClient.getInstance();
-
-		if(Enabled)
-		{
-			oldGamma = client.options.getGamma().getValue();
-			client.options.getGamma().setValue(100000.0);
-		}
-		else
-			client.options.getGamma().setValue(oldGamma);
 	}
 
 	@Override
@@ -64,7 +41,7 @@ public class FullBright extends ModuleBase implements HudRenderCallback
 	@Override
 	public void PostInitialization()
 	{
-		CheckStatus();
+		
 	}
 
 	@Override
@@ -116,15 +93,14 @@ public class FullBright extends ModuleBase implements HudRenderCallback
 	@Override
 	public void OpenSettingsMenu(FireClientMainScreen screen, ButtonWidget button)
 	{
-		enabledButton = ButtonWidget.builder(Text.of("FullBright: " + Enabled), _button ->
+		enabledButton = ButtonWidget.builder(Text.of("Enabled: " + Enabled), _button ->
         {
         	Enabled = !Enabled;
-			CheckStatus();
-			enabledButton.setMessage(Text.of("FullBright: " + Enabled));
-			enabledButton.setTooltip(Tooltip.of(Text.of("Sets fullbright to: " + !Enabled)));
+			enabledButton.setMessage(Text.of("Enabled: " + Enabled));
+			enabledButton.setTooltip(Tooltip.of(Text.of("Sets enabled to: " + !Enabled)));
         })
 		.dimensions(screen.width / 2 - 50, screen.height / 2 - 10, 100, 20)
-        .tooltip(Tooltip.of(Text.of("Sets fullbright to: " + !Enabled)))
+        .tooltip(Tooltip.of(Text.of("Sets enabled to: " + !Enabled)))
         .build();
 		
 		screen.AddDrawableChild(enabledButton);
@@ -139,16 +115,13 @@ public class FullBright extends ModuleBase implements HudRenderCallback
 	@Override
 	public void LoadSettings(JsonObject file)
 	{
-		Enabled = file.get("Enabled").getAsBoolean();
+		
 	}
 
 	@Override
 	public void SaveSettings(JsonObject file)
 	{
-		HashMap<String, Object> moduleSettings = new HashMap<String, Object>();
-		moduleSettings.put("Enabled", Enabled);
-
-		file.addProperty(Name, new Gson().toJson(moduleSettings));
+		
 	}
 
 }
