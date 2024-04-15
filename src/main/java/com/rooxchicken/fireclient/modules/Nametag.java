@@ -168,7 +168,7 @@ public class Nametag extends ModuleBase implements HudRenderCallback
 	public void CloseSettingsMenu(FireClientMainScreen screen)
 	{
 		
-	}t
+	}
 	@Override
 	public void LoadSettings(JsonObject file)
 	{
