@@ -13,7 +13,7 @@ FireClient is a work in progress Minecraft 1.20.1 client (with later versions co
 * ArmorHUD - Displays the remaining durability of all equipped armor
 * AutoMessage - Allows caching of /msg and similar commands, which removes the repetitive /msg or /r chatters face on servers
 * BowSwap - Allows for the swapping of bows and arrows with keybinds **[CHEAT] [WHITELISTED]**
-* Coordinates - Simple coordinates display, with an optional window mode that allows you to open a new window that displays your coordinates!
+* Coordinates - Simple coordinates display, with an optional window mode that allows you to open a new window that displays your coordinates! (See: [Coordinates Window Tutorial](COORDINATESWINDOW.md))
 * CoordsChat - Allows you to send your current location in chat, or to specified players with the press of a button **[WHITELISTED]**
 * DiscordRPC - Simple Discord Rich Presence implementation **[UNFINISHED]**
 * FullBright - Sets the in-game brightness to 100000, making everything fully lit
