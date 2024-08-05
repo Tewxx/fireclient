@@ -17,15 +17,15 @@ import net.minecraft.client.util.math.MatrixStack;
 @Mixin(WorldRenderer.class)
 class MixinRenderWorld
 {
-	@Inject(method = "renderLayer(Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/util/math/MatrixStack;DDDLorg/joml/Matrix4f;)V", at = @At("HEAD"), cancellable = true)
-	private void renderLayer(RenderLayer renderLayer, MatrixStack matrices, double cameraX, double cameraY, double cameraZ, Matrix4f positionMatrix, CallbackInfo info)
+	@Inject(method = "renderLayer(Lnet/minecraft/client/render/RenderLayer;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V", at = @At("HEAD"), cancellable = true)
+	private void renderLayer(RenderLayer renderLayer, double x, double y, double z, Matrix4f matrix4f, Matrix4f positionMatrix, CallbackInfo info)
 	{
 		if(!((RenderWorld)FireClient.Modules.get("RenderWorld")).renderWorld)
 			info.cancel();
 	}
 	
 //	@Inject(method = "renderEntity(Lnet/minecraft/entity/Entity;DDDFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V", at = @At("HEAD"))
-//	private void renderEntity(Entity entity, double cameraX, double cameraY, double cameraZ, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, CallbackInfo info)
+//	private void renderEntity(Entity entity, double cameraX, double cameraY, double cameraZ, RenderTickCounter tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, CallbackInfo info)
 //	{
 //		if(FireClientside.villageruuids.containsKey(entity.getUuidAsString()))
 //		{

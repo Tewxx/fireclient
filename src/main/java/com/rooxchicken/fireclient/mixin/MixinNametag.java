@@ -95,7 +95,7 @@ class MixinRenderNametags<T extends LivingEntity, M extends EntityModel<T>>
 //     //@Invoker("renderLabelIfPresent") protected abstract void renderLabelIfPresent(T entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light);
 
 //     @Inject(method = "render(Lnet/minecraft/entity/Entity;FFLnet/minecraft/text/Text;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
-//     public void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo info)
+//     public void render(T entity, float yaw, RenderTickCounter tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo info)
 //     {
 //         if(entity != MinecraftClient.getInstance().player || !((Nametag)FireClient.Modules.get("Nametag")).Enabled || !((Nametag)FireClient.Modules.get("Nametag")).RenderNametags || !((Nametag)FireClient.Modules.get("Nametag")).RenderOwnNametag || ((Nametag)FireClient.Modules.get("Nametag")).input == "")
 //             return;

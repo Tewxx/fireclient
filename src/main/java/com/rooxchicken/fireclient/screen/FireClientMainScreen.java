@@ -6,7 +6,9 @@ import org.lwjgl.glfw.GLFW;
 
 import com.rooxchicken.fireclient.FireClient;
 import com.rooxchicken.fireclient.modules.ModuleBase;
+import com.rooxchicken.fireclient.modules.ScrollClick;
 
+import net.minecraft.client.Mouse;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
@@ -258,7 +260,7 @@ public class FireClientMainScreen extends Screen
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta)
     {
-		this.renderBackground(context);
+		this.renderBackground(context, mouseX, mouseY, delta);
 		if(FireClient.Setting_DEBUG)
 			context.fill(mouseX, mouseY, mouseX+2, mouseY+2, 0xFF0000E4);
     	

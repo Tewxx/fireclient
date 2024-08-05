@@ -18,6 +18,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -102,12 +103,12 @@ public class ArmorHud extends ModuleBase implements HudRenderCallback
 	@Override
 	public void BeforeLines(DrawContext context)
 	{
-		onHudRender(context, 0);
+		onHudRender(context, RenderTickCounter.ZERO);
 		y1Mod = (int)(-10 * Scale);
 	}
 	
 	@Override
-	public void onHudRender(DrawContext drawContext, float tickDelta)
+	public void onHudRender(DrawContext drawContext, RenderTickCounter tickDelta)
 	{
 		if(!Enabled)
 			return; 	

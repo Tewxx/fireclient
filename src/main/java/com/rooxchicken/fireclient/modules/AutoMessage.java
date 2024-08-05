@@ -26,6 +26,7 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.network.message.SentMessage.Chat;
 import net.minecraft.text.Text;
@@ -147,7 +148,7 @@ public class AutoMessage extends ModuleBase implements HudRenderCallback
 	}
 	
 	@Override
-	public void onHudRender(DrawContext drawContext, float tickDelta)
+	public void onHudRender(DrawContext drawContext, RenderTickCounter tickDelta)
 	{
 
 	}

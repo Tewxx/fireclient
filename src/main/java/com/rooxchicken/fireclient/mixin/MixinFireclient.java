@@ -66,39 +66,39 @@ abstract class MixinCustomCapes extends PlayerEntity
         //TODO Auto-generated constructor stub
     }
 
-    @Inject(method = "getCapeTexture()Lnet/minecraft/util/Identifier;", at = @At("HEAD"), cancellable = true)
-    public Identifier getCapeTexture(CallbackInfoReturnable info)
-    {
-        if(!FireClient.Setting_CustomCape)
-            return null;
+    // @Inject(method = "getCapeTexture()Lnet/minecraft/util/Identifier;", at = @At("HEAD"), cancellable = true)
+    // public Identifier getCapeTexture(CallbackInfoReturnable info)
+    // {
+    //     if(!FireClient.Setting_CustomCape)
+    //         return null;
 
-        String username = this.getName().getString();
+    //     String username = this.getName().getString();
 
-        if(FireClient.FIRECLIENT_CUSTOMCAPES.containsKey(username))
-            info.setReturnValue(new Identifier(("fireclient:textures/capes/" + FireClient.FIRECLIENT_CUSTOMCAPES.get(username) + "_cape.png")));
-        else
-            info.setReturnValue(null);
-        info.cancel();
+    //     if(FireClient.FIRECLIENT_CUSTOMCAPES.containsKey(username))
+    //         info.setReturnValue(Identifier.of(("fireclient:textures/capes/" + FireClient.FIRECLIENT_CUSTOMCAPES.get(username) + "_cape.png")));
+    //     else
+    //         info.setReturnValue(null);
+    //     info.cancel();
 
-        return null;
-    }
+    //     return null;
+    // }
 
-    @Inject(method = "getElytraTexture()Lnet/minecraft/util/Identifier;", at = @At("HEAD"), cancellable = true)
-    public Identifier getElytraTexture(CallbackInfoReturnable info)
-    {
-        if(!FireClient.Setting_CustomCape)
-            return null;
+    // @Inject(method = "getElytraTexture()Lnet/minecraft/util/Identifier;", at = @At("HEAD"), cancellable = true)
+    // public Identifier getElytraTexture(CallbackInfoReturnable info)
+    // {
+    //     if(!FireClient.Setting_CustomCape)
+    //         return null;
 
-            String username = this.getName().getString();
+    //         String username = this.getName().getString();
 
-        if(FireClient.FIRECLIENT_CUSTOMCAPES.containsKey(username))
-            info.setReturnValue(new Identifier(("fireclient:textures/capes/" + FireClient.FIRECLIENT_CUSTOMCAPES.get(username) + "_elytra.png")));
-        else
-            info.setReturnValue(null);
-        info.cancel();
+    //     if(FireClient.FIRECLIENT_CUSTOMCAPES.containsKey(username))
+    //         info.setReturnValue(Identifier.of(("fireclient:textures/capes/" + FireClient.FIRECLIENT_CUSTOMCAPES.get(username) + "_elytra.png")));
+    //     else
+    //         info.setReturnValue(null);
+    //     info.cancel();
 
-        return null;
-    }
+    //     return null;
+    // }
     
 }
 

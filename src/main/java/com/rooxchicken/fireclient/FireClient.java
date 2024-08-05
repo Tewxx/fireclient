@@ -48,7 +48,7 @@ public class FireClient implements ModInitializer
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("fireclient");
     
-    public static String FIRECLIENT_VERSION = "0.3";
+    public static String FIRECLIENT_VERSION = "0.4";
     public static boolean FIRECLIENT_CONFIGFAIL = false;
     public static boolean FIRECLIENT_IGNOREFAIL = false;
 	public static boolean FIRECLIENT_WHITELISTED = false;
@@ -70,9 +70,6 @@ public class FireClient implements ModInitializer
 		LOGGER.info("FireClient V" + FIRECLIENT_VERSION + " (1987)");
 
 		Modules = new HashMap<String, ModuleBase>();
-		// Modules.put("Dummy1", new Dummy());
-		// Modules.put("Dummy2", new Dummy());
-		// Modules.put("Dummy3", new Dummy());
 		Modules.put("ToggleablePieChart", new ToggleablePieChart());
 		Modules.put("ScrollClick", new ScrollClick());
 		Modules.put("RenderWorld", new RenderWorld());

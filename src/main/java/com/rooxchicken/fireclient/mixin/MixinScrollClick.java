@@ -15,7 +15,7 @@ import net.minecraft.screen.slot.SlotActionType;
 
 @Mixin(MinecraftClient.class)
 abstract class MixinScrollItemUse
-{
+{/*
     @Invoker("doItemUse") protected abstract void invokeDoItemUse();
 
     @Inject(at = @At("HEAD"), method = "tick")
@@ -31,11 +31,13 @@ abstract class MixinScrollItemUse
                 ((ScrollClick)FireClient.Modules.get("ScrollClick")).clicks--;
             }
     }
+	*/
 }
 
 @Mixin(Mouse.class)
 class MixinScrollAdder
 {
+	/*
     @Inject(method = "onMouseScroll(JDD)V", at = @At("HEAD"), cancellable = true)
     private void onMouseScroll(long window, double horizontal, double vertical, CallbackInfo info)
     {
@@ -47,4 +49,5 @@ class MixinScrollAdder
 
         info.cancel();
     }
+	*/
 }

@@ -81,7 +81,7 @@ public class FireClientConfigFailScreen extends Screen
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta)
     {
-		this.renderBackground(context);
+		this.renderBackground(context, mouseX, mouseY, delta);
 		
 		String text[] = {"FireClient Error", "", "There was an error loading/saving the", "FireClient configuration file.", "", "What would you like to do?"};
 		for(int i = 0; i < text.length; i++)

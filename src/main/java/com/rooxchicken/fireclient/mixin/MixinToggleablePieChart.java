@@ -65,7 +65,7 @@ class MixinDebugPieChart
 		((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).Enabled = false;
 	}
 
-	@Inject(method = "shouldMonitorTickDuration()Z", at = @At("HEAD"), cancellable = true)
+	/*@Inject(method = "shouldMonitorTickDuration()Z", at = @At("HEAD"), cancellable = true)
 	private void shouldMonitorTickDuration(CallbackInfoReturnable<Boolean> info) {
 		MinecraftClient client = MinecraftClient.getInstance();
 
@@ -73,5 +73,5 @@ class MixinDebugPieChart
 			info.setReturnValue(((ToggleablePieChart)FireClient.Modules.get("ToggleablePieChart")).Enabled && !client.options.hudHidden);
 		else
 			info.setReturnValue(false);
-    }
+    }*/
 }

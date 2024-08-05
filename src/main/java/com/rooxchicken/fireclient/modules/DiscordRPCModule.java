@@ -29,8 +29,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.enchantment.FireAspectEnchantment;
 import net.minecraft.network.message.SentMessage.Chat;
 import net.minecraft.text.Text;
 
@@ -119,7 +119,7 @@ public class DiscordRPCModule extends ModuleBase implements HudRenderCallback
 	}
 	
 	@Override
-	public void onHudRender(DrawContext drawContext, float tickDelta)
+	public void onHudRender(DrawContext drawContext, RenderTickCounter tickDelta)
 	{
 		if(!Enabled)
 			return;
