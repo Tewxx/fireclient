@@ -261,6 +261,7 @@ public class FireClientMainScreen extends Screen
     public void render(DrawContext context, int mouseX, int mouseY, float delta)
     {
 		this.renderBackground(context, mouseX, mouseY, delta);
+		super.render(context, mouseX, mouseY, delta);
 		if(FireClient.Setting_DEBUG)
 			context.fill(mouseX, mouseY, mouseX+2, mouseY+2, 0xFF0000E4);
     	
@@ -295,8 +296,6 @@ public class FireClientMainScreen extends Screen
 			}
 			break;
     	}
-    	
-    	super.render(context, mouseX, mouseY, delta);
     }
     
     private void renderMainScreen(DrawContext context, int mouseX, int mouseY, float delta)

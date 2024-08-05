@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "fireclient",
-	"version": "0.4",
+	"version": "0.4.1",
 	"name": "FireClient",
 	"description": "Client made by Roo. Helps with SMPs",
 	"authors": [

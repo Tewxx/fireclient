@@ -35,6 +35,7 @@ import com.rooxchicken.fireclient.modules.Dummy;
 import com.rooxchicken.fireclient.modules.FullBright;
 import com.rooxchicken.fireclient.modules.ModuleBase;
 import com.rooxchicken.fireclient.modules.Nametag;
+import com.rooxchicken.fireclient.modules.ReachDisplay;
 import com.rooxchicken.fireclient.modules.RenderWorld;
 import com.rooxchicken.fireclient.modules.ScrollClick;
 import com.rooxchicken.fireclient.modules.ToggleablePieChart;
@@ -48,7 +49,7 @@ public class FireClient implements ModInitializer
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("fireclient");
     
-    public static String FIRECLIENT_VERSION = "0.4";
+    public static String FIRECLIENT_VERSION = "0.4.1";
     public static boolean FIRECLIENT_CONFIGFAIL = false;
     public static boolean FIRECLIENT_IGNOREFAIL = false;
 	public static boolean FIRECLIENT_WHITELISTED = false;
@@ -73,6 +74,7 @@ public class FireClient implements ModInitializer
 		Modules.put("ToggleablePieChart", new ToggleablePieChart());
 		Modules.put("ScrollClick", new ScrollClick());
 		Modules.put("RenderWorld", new RenderWorld());
+		Modules.put("ReachDisplay", new ReachDisplay());
 		Modules.put("Nametag", new Nametag());
 		Modules.put("FullBright", new FullBright());
 		Modules.put("DiscordRPC", new DiscordRPCModule());
